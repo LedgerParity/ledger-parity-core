@@ -7,3 +7,8 @@ Each task needs a maintainer to confirm availability before assignment. No point
 3. **Muxed-account scope verification.** Current equality preserves M addresses; coverage from base G accounts can remain conservatively unknown for all-muxed records. Verify official address/account semantics, propose base-account-plus-muxed-ID representation using maintained Stellar tooling, test distinct muxed IDs and base-account scans. Never collapse recipient identities.
 4. **Independent provider review.** Audit retention/freshness assumptions against a pinned Horizon implementation; add fixtures for changing history bounds and inconsistent providers. Acceptance: conflicting or unproven evidence cannot create definitive absence. Do not add a second service dependency without a separate proposal.
 5. **Scale measurement.** Matching currently examines each internal/operation pair. Deliver reproducible synthetic benchmarks at 1k/10k records and candidate-index design; preserve order-independent ambiguity and exact identity tests. Optimize only with benchmark evidence.
+
+
+## Implementation update 2026-09-12
+
+Next bounded tasks: add a real credit-asset RPC/Horizon pair and a fee-bump pair with negative issuer/hash cases; design retained-ledger coverage and crash/restart semantics before RPC ingestion. Coordinate interval support with consumers. Real operator validation and durable checkpoints remain open.

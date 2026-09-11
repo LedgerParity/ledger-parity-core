@@ -22,3 +22,8 @@ See [bounded tasks](docs/backlog.md), [audit](docs/GAP_ASSESSMENT.md), and [deci
 - [ ] Real operator validation, durable checkpointing and broader payment/event support.
 - [x] Remote CI verified at the revisions linked in PROJECT_HANDOFF.md.
 - [ ] Optional local Windows race execution (no C compiler); Linux CI race tests passed.
+
+
+## Implementation update 2026-09-12
+
+Implemented follow-up: explicit settlement intervals/business references and a separate SDK-backed RPC equivalence corpus. Captured native-payment and synthetic batch/failure tests are available; credit-asset, fee-bump and full retention/checkpoint gates remain open before a runtime RPC ingestor. CLI/connectors implement scoped SDP CSV and evidence replay. Operator validation remains external and unfulfilled.

@@ -19,3 +19,8 @@ Self-review (not an independent-agent audit) caught unsafe reuse of duplicate cl
 Next: validate practical usefulness with a consenting operator's sanitized export and known discrepancy. Named adapters remain experimental pending upstream contracts. Original Drips feedback/application are unavailable; maintainer recalls Stellar relevance/impact concerns. CLI contains a sourced appeal draft, not a submitted application. No adoption, partnership, quantified impact or acceptance is claimed. Final normal pushes/status are reported to the user; preserve these evidence distinctions in future work.
 
 Follow-up research: docs/STELLAR_OPPORTUNITIES.md records pinned SDP export source findings, adjacent-platform comparison, RPC migration risk and implementation acceptance gates. No SDP adapter or RPC ingestor was added; source inspection is not executed upstream testing or operator validation. Next concrete task is a release-verified export contract with independent sender/network/time scope, followed by replayable evidence. Research did not change prior runtime test evidence.
+
+
+## Implementation update 2026-09-12
+
+Follow-up implementation: explicit interval expectations and business references; a new interval regression test; tools/rpc-corpus with locked SDK, read-only capture, public-testnet native fixture and seven offline verification tests. Runtime RPC ingestion remains unimplemented because broader identity/asset/history gates remain open. No signing, contracts or new repositories. See tools/rpc-corpus/README.md for evidence limits.

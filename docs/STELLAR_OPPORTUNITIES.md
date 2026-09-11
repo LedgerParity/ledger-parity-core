@@ -2,6 +2,8 @@
 
 Researched 2026-09-11. Recommendations are hypotheses, not established demand, compatibility, adoption or Drips eligibility.
 
+Implementation update 2026-09-12: explicit expectation intervals, SDP 7.0.0 CSV mapping and CLI evidence replay are implemented in their owning repositories. The [RPC corpus](../tools/rpc-corpus/README.md) has a captured native-payment case and synthetic negative/batch tests; the full migration gate remains open. The research below preserves the original rationale and planned acceptance checks. No operator adoption was established.
+
 ## Recommended direction
 
 Build independent, reproducible settlement verification for Stellar Disbursement Platform (SDP) operators. The intended user is an operations engineer or finance reviewer checking exported payment obligations against observed Stellar payments. Preserve business references, exact assets, candidate operations and evidence coverage so another reviewer can reproduce each conclusion.

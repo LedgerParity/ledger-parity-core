@@ -33,7 +33,11 @@ func ValidateInternal(p InternalPayment) error {
 	if p.OperationType != "payment" {
 		return fmt.Errorf("only ordinary classic payment expectations are supported")
 	}
-	if p.ID == "" || p.Network == "" || p.Sender == "" || p.Recipient == "" || p.Timestamp.IsZero() || p.Status == "" {
+	interval := !p.SettlementStart.IsZero() || !p.SettlementEnd.IsZero()
+	if interval && (p.SettlementStart.IsZero() || p.SettlementEnd.IsZero() || p.SettlementEnd.Before(p.SettlementStart) || !p.Timestamp.IsZero()) {
+		return fmt.Errorf("use an ordered settlement interval or timestamp, never both")
+	}
+	if p.ID == "" || p.Network == "" || p.Sender == "" || p.Recipient == "" || (!interval && p.Timestamp.IsZero()) || p.Status == "" {
 		return fmt.Errorf("missing internal identity, direction, timestamp or status")
 	}
 	if _, err := utils.ParsePaymentAmount(p.Amount); err != nil {
