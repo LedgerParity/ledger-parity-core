@@ -3,14 +3,14 @@ package utils
 import (
 	"fmt"
 	"math/big"
+	"regexp"
 	"strings"
 )
 
 // ParseScaledAmount parses a decimal string into a big.Int scaled by decimals (e.g. 7 for Stellar XLM stroops).
 func ParseScaledAmount(amountStr string, decimals int) (*big.Int, error) {
-	amountStr = strings.TrimSpace(amountStr)
-	if amountStr == "" {
-		return big.NewInt(0), nil
+	if decimals < 0 || decimals > 18 || !decimalPattern.MatchString(amountStr) {
+		return nil, fmt.Errorf("invalid decimal amount or scale")
 	}
 
 	parts := strings.Split(amountStr, ".")
@@ -21,7 +21,7 @@ func ParseScaledAmount(amountStr string, decimals int) (*big.Int, error) {
 	}
 
 	if len(fractionPart) > decimals {
-		fractionPart = fractionPart[:decimals]
+		return nil, fmt.Errorf("amount exceeds %d decimal places", decimals)
 	} else {
 		fractionPart = fractionPart + strings.Repeat("0", decimals-len(fractionPart))
 	}
@@ -42,6 +42,9 @@ func ParseScaledAmount(amountStr string, decimals int) (*big.Int, error) {
 
 // FormatScaledAmount converts a scaled big.Int back to a standard decimal string representation.
 func FormatScaledAmount(scaled *big.Int, decimals int) string {
+	if decimals == 0 && scaled != nil {
+		return scaled.String()
+	}
 	if scaled == nil {
 		return "0"
 	}
@@ -66,6 +69,20 @@ func FormatScaledAmount(scaled *big.Int, decimals int) string {
 		res = "-" + res
 	}
 	return res
+}
+
+var decimalPattern = regexp.MustCompile(`^-?[0-9]+(\.[0-9]+)?$`)
+
+// ParsePaymentAmount enforces Stellar classic's positive signed-int64 stroop range.
+func ParsePaymentAmount(s string) (*big.Int, error) {
+	n, err := ParseScaledAmount(s, 7)
+	if err != nil {
+		return nil, err
+	}
+	if n.Sign() <= 0 || !n.IsInt64() {
+		return nil, fmt.Errorf("payment amount must be positive and fit int64 stroops")
+	}
+	return n, nil
 }
 
 // AmountDeltaScaled returns the difference (a - b) as a formatted decimal string.

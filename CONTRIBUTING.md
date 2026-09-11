@@ -1,34 +1,9 @@
-# Contributing to ledger-parity-core
+﻿# Contributing
 
-Thank you for your interest in contributing to `ledger-parity-core`!
+Use Go 1.22.2+ and run `go test ./...`, `go vet ./...`, `go build ./...`; CI also runs `go test -race ./...` with a C compiler. A sibling checkout is not required. Format changes with gofmt.
 
----
+Choose a bounded task in docs/backlog.md. Open a PR explaining the concrete input/failure, behavior change, tests and limitations. For upstream-dependent work, cite the official schema/API and revision and use synthetic fixtures. Include negative cases, preserve exact amounts and UNKNOWN outcomes, and never hide a failed check. Keep PRs small enough for the maintainer to review code and semantics. Confirm maintainer availability before accepting time-sensitive assignments; no review-time guarantee is currently established.
 
-## 1. Drips Wave Guidelines
+No signing keys, customer exports, invented adoption or application compatibility. Named adapters require provenance before compatibility claims. Follow SECURITY.md for sensitive findings. Existing MIT licensing applies; preserve upstream notices.
 
-This repository participates in the **Drips Wave Program (Stellar Wave)**.
-
-### Principles
-1. **Focus on Real Impact:** All contributions should improve core reconciliation accuracy, speed up ingestion, or add new discrepancy detection rules.
-2. **Clear Context & Scope:** Write descriptive pull request summaries linking to issues or detailing exact problem contexts.
-3. **No Superficial Patches:** Do not hide errors by swallowing exceptions or altering test assertions without addressing root causes.
-
----
-
-## 2. Development Setup
-
-### Requirements
-- Go 1.22+
-
-### Workflow
-1. Fork and clone the repository.
-2. Create a feature branch:
-   ```bash
-   git checkout -b feature/my-new-feature
-   ```
-3. Run tests locally before opening a PR:
-   ```bash
-   go test -v ./...
-   go vet ./...
-   ```
-4. Submit your Pull Request with a clear summary of changes and test verification results.
+Drips participation/approval is not established. Issues should arise from actual engineering needs; do not add Wave labels or points merely to create activity.

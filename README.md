@@ -1,89 +1,25 @@
-# ledger-parity-core
+﻿# ledger-parity-core
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/LedgerParity/ledger-parity-core.svg)](https://pkg.go.dev/github.com/LedgerParity/ledger-parity-core)
-[![CI](https://github.com/LedgerParity/ledger-parity-core/actions/workflows/ci.yml/badge.svg)](https://github.com/LedgerParity/ledger-parity-core/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+Read-only reconciliation of application payment expectations against Stellar **ordinary classic payment operations**. For backend engineers investigating missed settlement notifications, incorrect amounts or duplicated internal records. Developer preview; no demonstrated operator adoption or production-readiness claim.
 
-`ledger-parity-core` is the core Go library behind **LedgerParity** — a read-only reconciliation service that automatically cross-checks a Stellar application's internal payment records against actual on-chain ledger settlement data.
+Amounts stay exact to one stroop, including at the signed-int64 limit. Matches require the same network passphrase, sender, recipient, asset type/code/issuer and time window. An operation ID disambiguates multiple payments in one transaction. Unproven coverage, ambiguous candidates and malformed observations remain `UNKNOWN`.
 
----
+From this repository alone, with Go 1.22.2 or newer:
 
-## 🌟 Overview
-
-Applications built on Stellar (payroll systems, escrow platforms, rental deposit services) keep their own internal record of what they believe happened. The Stellar ledger keeps a separate, independent record of what actually settled on-chain. These two records can drift apart: backend bugs, missed webhook notifications, duplicate payment submissions, or unconfirmed transactions.
-
-`ledger-parity-core` provides the core matching engine, Stellar Horizon & Soroban RPC ingestion logic, and embedded state persistence to detect and categorize discrepancies before they become user-facing incidents.
-
----
-
-## 🚀 Key Features
-
-- **Multi-Pass Reconciliation Engine:** Matches records by explicit Reference IDs or fuzzy recipient, asset, amount, and timeframe tolerance windows (`±10 mins` default).
-- **Categorized Discrepancies:**
-  - `MISSING_ON_CHAIN`: Internal record exists, but no corresponding on-chain settlement found.
-  - `AMOUNT_MISMATCH`: On-chain transaction exists for recipient/time, but amount differs.
-  - `DUPLICATE_INTERNAL`: Multiple internal records map to a single on-chain transaction.
-  - `ORPHANED_ON_CHAIN`: On-chain payment detected for target account with no internal record.
-- **On-Chain Ingestion:** Direct Stellar Horizon REST API client & Soroban RPC event ingestion.
-- **Embedded Persistence:** Embedded SQLite store (`pkg/store`) for caching match states and checkpointing processed ledgers across runs.
-- **Zero Remediation / Safe Read-Only:** Operates in strict read-only mode — no write keys required, no fund movement, no automated transaction submission.
-
----
-
-## 💡 Differentiation
-
-- **vs. `TrapTrace/soroban-error-index`:** That project is a static knowledge base of Soroban error strings and fixes. `LedgerParity` performs real-time operational reconciliation between internal database records and on-chain settlements.
-- **vs. `sorolens`:** `sorolens` provides contract-execution observability (storage TTL, event monitoring, invocation health). `LedgerParity` is specifically focused on financial record matching across two systems.
-- **vs. `sorokeep`:** `sorokeep` is an operations layer for deployed contracts. `LedgerParity` is a standalone cross-check tool between off-chain application DBs and on-chain Stellar payments.
-
----
-
-## 📦 Installation & Usage
-
-```go
-package main
-
-import (
-	"context"
-	"fmt"
-	"time"
-
-	"github.com/LedgerParity/ledger-parity-core/pkg/engine"
-	"github.com/LedgerParity/ledger-parity-core/pkg/types"
-)
-
-func main() {
-	rec := engine.NewReconciler()
-	
-	// Sample internal payments and on-chain payments
-	internals := []types.InternalPayment{ /* ... */ }
-	onChains := []types.OnChainPayment{ /* ... */ }
-
-	now := time.Now()
-	report := rec.Reconcile("my_app", now.Add(-24*time.Hour), now, internals, onChains)
-
-	fmt.Println(report.Summary())
-}
+```sh
+go test ./...
+go vet ./...
+go build ./...
 ```
 
----
+The offline operator demonstration and JSON/CSV input workflow live in [ledger-parity-cli](https://github.com/LedgerParity/ledger-parity-cli). Core has no external runtime dependencies. Cross-repository consumers must pin the updated core revision; old input records need migration.
 
-## 🧪 Testing
+Library flow: normalize and validate `types.InternalPayment`; set `HorizonIngestor.Network` to the exact expected passphrase; call `Fetch(ctx, accounts, start, end)`; pass its `Coverage` to `engine.ReconcileOptions`. Fetch a window expanded by `TimeframeToleranceSec` around the internal window. Set `Coverage.InternalComplete` only if the export covers every relevant ordinary payment for the monitored accounts. `Reconcile` accepts incomplete evidence and reports it separately; `Fetch` returns errors for unsuccessful scans. The legacy slice-only `FetchOnChainPayments` wrapper discards coverage and is unsuitable for definitive absence conclusions.
 
-Run the full unit test suite:
+Input migration: require `network`, `operation_type: "payment"`, `asset_type`, sender, recipient, status, timestamp and positive decimal-string amount. Native XLM uses `asset_type: "native"`, `asset: "XLM"`, no issuer. Credit assets require a case-sensitive code and issuer. `reference_id` means transaction hash; memo matching was removed. `operation_id` is recommended. Monetary tolerance and asset alias options were removed; matching is exact. `completed`, `success`, `settled` (case-insensitive) declare expected completed settlement. Other statuses with observed settlement produce a status discrepancy; without settlement they remain unresolved.
 
-```bash
-go test -v ./...
-```
+A complete scan means provider-declared retained history covers the requested window, pages were traversed, and the retention boundary stayed stable. It trusts Horizon and does not prove cryptographic or continuous history. Accounts are exact opaque identifiers; StrKey/checksum validation is not implemented. Muxed identities are preserved, with conservative base-account coverage limitations. Reports distinguish matches, discrepancies and unknowns; unknowns are not counted as financial discrepancies.
 
----
+Not supported: Soroban/RPC events, contract tokens, path payments, account creation/merge settlement, memo enrichment, transaction signing or remediation. The old `pkg/store` API is not connected to ingestion or CLI: MemoryStore is process-local; SQLiteStore needs a caller-registered driver and stores aggregate reports only. There is no durable automatic checkpoint/resume capability. Scans restart safely instead of advancing an unverified checkpoint.
 
-## 🤝 Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines, testing policies, and Drips Wave issue tagging standards.
-
----
-
-## 📄 License
-
-[MIT License](LICENSE) © LedgerParity Maintainers.
+Read the [audit](docs/GAP_ASSESSMENT.md), [source review](docs/SOURCES.md), [roadmap](ROADMAP.md), [decisions](DECISIONS.md), [handoff](PROJECT_HANDOFF.md), [contributor tasks](docs/backlog.md), [contribution guide](CONTRIBUTING.md) and [security guidance](SECURITY.md). Existing [MIT license](LICENSE) is unchanged. Drips admission is not claimed.

@@ -1,0 +1,12 @@
+# Decisions
+
+2026-09-11
+
+- Preserve read-only application-versus-Stellar reconciliation and existing MIT licenses and three repository boundaries. No fund movement, wallet integration, token, contract or dashboard is justified.
+- Scope this preview to ordinary classic `payment` operations. Exclude path payments, account creation/merge and Soroban. A token contract address is never an issuer alias. Exact passphrase identifies network; operation ID identifies a settlement within that network. Accounts are compared as exact opaque strings, including muxed addresses; cryptographic address validation is not implemented.
+- Use exact positive int64-range stroop amounts; reject excess precision rather than round. Remove floating amount tolerance/asset alias options. This is an intentional breaking preview contract change. `reference_id` means transaction hash only, never memo; explicit references still require economics/direction/time consistency. `operation_type`, `network`, `asset_type` and issuer for credit assets are required on input.
+- Unique operation references can establish observed settlement without whole-window coverage. Transaction-only/fuzzy matches require coverage of the full tolerance window. Multiple candidates or competing claims stay UNKNOWN; repeated internal source+ID is a duplicate, not proof of duplicate payment execution.
+- Missing settlement requires completed/success/settled internal status and covered candidate window/account/network. Orphan classification also requires an operator assertion of a complete export. Coverage is provider evidence, not a cryptographic history proof. Partial provider retention/freshness remains visible. Errors return no successful ingestion result.
+- Traverse descending numeric paging tokens using the configured endpoint instead of following arbitrary next URLs. Bounded retries, cancellation, body/page limits and no redirects. Scan restart is deliberate: no checkpoint is advanced, and the legacy store package is not wired into ingestion/CLI.
+- Named application adapters are experimental local schema examples until verified against versioned upstream contracts. Canonical file import is the supported workflow. Do not infer a partnership from an adapter name.
+- Feedback available is the maintainer's recollection that Stellar relevance/impact was a concern. The rejection text and application are unavailable. Address this by making the actual Stellar operator workflow inspectable, not claiming established adoption or admission.

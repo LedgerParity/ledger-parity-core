@@ -11,28 +11,40 @@ type DiscrepancyType string
 const (
 	DiscrepancyNone              DiscrepancyType = "NONE"
 	DiscrepancyMissingOnChain    DiscrepancyType = "MISSING_ON_CHAIN"
-	DiscrepancyAmountMismatch   DiscrepancyType = "AMOUNT_MISMATCH"
+	DiscrepancyAmountMismatch    DiscrepancyType = "AMOUNT_MISMATCH"
 	DiscrepancyDuplicateInternal DiscrepancyType = "DUPLICATE_INTERNAL"
 	DiscrepancyOrphanedOnChain   DiscrepancyType = "ORPHANED_ON_CHAIN"
 	DiscrepancyStatusMismatch    DiscrepancyType = "STATUS_MISMATCH"
+	DiscrepancyUnresolved        DiscrepancyType = "UNRESOLVED"
+	DiscrepancyInvalid           DiscrepancyType = "INVALID_DATA"
 )
 
 // InternalPayment represents a payment record stored in a target application's database or API.
 type InternalPayment struct {
-	ID          string            `json:"id"`
-	SourceApp   string            `json:"source_app"`
-	ReferenceID string            `json:"reference_id,omitempty"`
-	Sender      string            `json:"sender"`
-	Recipient   string            `json:"recipient"`
-	Amount      string            `json:"amount"`
-	Asset       string            `json:"asset"` // e.g. "XLM", "USDC", "native"
-	Timestamp   time.Time         `json:"timestamp"`
-	Status      string            `json:"status"` // e.g. "completed", "pending", "success"
-	Metadata    map[string]string `json:"metadata,omitempty"`
+	OperationType string            `json:"operation_type"` // Must be payment
+	Network       string            `json:"network"`        // Exact Stellar network passphrase
+	OperationID   string            `json:"operation_id,omitempty"`
+	AssetType     string            `json:"asset_type"`
+	AssetIssuer   string            `json:"asset_issuer,omitempty"`
+	AssetContract string            `json:"asset_contract,omitempty"` // Unsupported, never silently aliased
+	ID            string            `json:"id"`
+	SourceApp     string            `json:"source_app"`
+	ReferenceID   string            `json:"reference_id,omitempty"`
+	Sender        string            `json:"sender"`
+	Recipient     string            `json:"recipient"`
+	Amount        string            `json:"amount"`
+	Asset         string            `json:"asset"` // e.g. "XLM", "USDC", "native"
+	Timestamp     time.Time         `json:"timestamp"`
+	Status        string            `json:"status"` // e.g. "completed", "pending", "success"
+	Metadata      map[string]string `json:"metadata,omitempty"`
 }
 
-// OnChainPayment represents a payment operation or transaction verified on the Stellar ledger.
+// OnChainPayment represents a provider observation (or an explicitly offline fixture).
 type OnChainPayment struct {
+	Network         string    `json:"network"`
+	OperationType   string    `json:"operation_type"` // Only payment supported
+	AssetType       string    `json:"asset_type"`
+	AssetContract   string    `json:"asset_contract,omitempty"`
 	TransactionHash string    `json:"transaction_hash"`
 	OperationID     string    `json:"operation_id"`
 	Account         string    `json:"account"`     // Source account
@@ -53,6 +65,7 @@ const (
 	MatchExact       MatchStatus = "EXACT"
 	MatchTolerant    MatchStatus = "TOLERANT_MATCH"
 	MatchDiscrepancy MatchStatus = "DISCREPANCY"
+	MatchUnknown     MatchStatus = "UNKNOWN"
 )
 
 // MatchResult represents the detailed reconciliation verdict for a pair or orphan.
@@ -68,6 +81,8 @@ type MatchResult struct {
 
 // DiscrepancyReport aggregates all match results and high-level metrics for a reconciliation run.
 type DiscrepancyReport struct {
+	Coverage           Coverage                `json:"coverage"`
+	TotalUnknown       int                     `json:"total_unknown"`
 	GeneratedAt        time.Time               `json:"generated_at"`
 	TargetApp          string                  `json:"target_app"`
 	TimeWindowStart    time.Time               `json:"time_window_start"`
@@ -80,10 +95,24 @@ type DiscrepancyReport struct {
 	Results            []MatchResult           `json:"results"`
 }
 
+// Coverage describes a closed time window for ordinary classic payments.
+// InternalComplete is an operator assertion about the application export.
+type Coverage struct {
+	Network          string    `json:"network"`
+	Accounts         []string  `json:"accounts"`
+	Start            time.Time `json:"start"`
+	End              time.Time `json:"end"`
+	Complete         bool      `json:"complete"`
+	InternalComplete bool      `json:"internal_complete"`
+	Reason           string    `json:"reason"`
+	Source           string    `json:"source"`
+	Pages            int       `json:"pages"`
+}
+
 // Summary returns a concise human-readable summary string of the report.
 func (r *DiscrepancyReport) Summary() string {
 	return fmt.Sprintf(
-		"Reconciliation Summary [%s]: Internal: %d | On-Chain: %d | Matched: %d | Discrepancies: %d",
-		r.TargetApp, r.TotalInternal, r.TotalOnChain, r.TotalMatched, r.TotalDiscrepancies,
+		"Reconciliation Summary [%s]: Internal: %d | On-Chain: %d | Matched: %d | Discrepancies: %d | Unknown: %d",
+		r.TargetApp, r.TotalInternal, r.TotalOnChain, r.TotalMatched, r.TotalDiscrepancies, r.TotalUnknown,
 	)
 }
