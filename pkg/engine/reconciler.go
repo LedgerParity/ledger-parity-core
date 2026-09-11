@@ -81,7 +81,7 @@ func (r *Reconciler) Reconcile(app string, start, end time.Time, ips []types.Int
 		p := &ips[i]
 		result := types.MatchResult{InternalPayment: p}
 		unresolved(&result, "No unique settlement established")
-		if err := types.ValidateInternal(*p); err != nil || !validWindow || p.Timestamp.Before(start) || p.Timestamp.After(end) {
+		if err := types.ValidateInternal(*p); err != nil || !validWindow || !p.InWindow(start, end) {
 			result.Discrepancy = types.DiscrepancyInvalid
 			result.Notes = "Invalid record or reconciliation window"
 		} else if badChain {
@@ -96,7 +96,8 @@ func (r *Reconciler) Reconcile(app string, start, end time.Time, ips []types.Int
 				if o.Network != p.Network || o.Account != p.Sender || o.Destination != p.Recipient || o.AssetType != p.AssetType || o.AssetCode != p.Asset || o.AssetIssuer != p.AssetIssuer {
 					continue
 				}
-				if o.Timestamp.Before(p.Timestamp.Add(-tolerance)) || o.Timestamp.After(p.Timestamp.Add(tolerance)) {
+				a, b := p.MatchingWindow(tolerance)
+				if o.Timestamp.Before(a) || o.Timestamp.After(b) {
 					continue
 				}
 				if p.OperationID != "" && p.OperationID != o.OperationID {
@@ -117,7 +118,8 @@ func (r *Reconciler) Reconcile(app string, start, end time.Time, ips []types.Int
 		report.Results = append(report.Results, result)
 	}
 	completeFor := func(p types.InternalPayment) bool {
-		return c.Complete && c.Network == p.Network && observedAccount(c, p.Sender, p.Recipient) && !c.Start.IsZero() && !c.End.IsZero() && !c.Start.After(p.Timestamp.Add(-tolerance)) && !c.End.Before(p.Timestamp.Add(tolerance))
+		a, b := p.MatchingWindow(tolerance)
+		return c.Complete && c.Network == p.Network && observedAccount(c, p.Sender, p.Recipient) && !c.Start.IsZero() && !c.End.IsZero() && !c.Start.After(a) && !c.End.Before(b)
 	}
 	for i, p := range ips {
 		result := &report.Results[i]
@@ -165,10 +167,13 @@ func (r *Reconciler) Reconcile(app string, start, end time.Time, ips []types.Int
 			result.Status = types.MatchExact
 			result.Discrepancy = types.DiscrepancyNone
 			result.Notes = "Unique ordinary payment; exact amount, asset and direction"
-			if !p.Timestamp.Equal(o.Timestamp) {
+			if !p.Timestamp.IsZero() && !p.Timestamp.Equal(o.Timestamp) {
 				result.Status = types.MatchTolerant
 			}
-			d := o.Timestamp.Sub(p.Timestamp)
+			d := time.Duration(0)
+			if !p.Timestamp.IsZero() {
+				d = o.Timestamp.Sub(p.Timestamp)
+			}
 			if d < 0 {
 				d = -d
 			}
@@ -193,7 +198,7 @@ func (r *Reconciler) Reconcile(app string, start, end time.Time, ips []types.Int
 		// Invalid internal rows can hide claims, so suppress definite orphan conclusions.
 		validExport := true
 		for _, ip := range ips {
-			if types.ValidateInternal(ip) != nil || ids[ip.SourceApp+"\x00"+ip.ID] > 1 {
+			if types.ValidateInternal(ip) != nil || !ip.InWindow(start, end) || ids[ip.SourceApp+"\x00"+ip.ID] > 1 {
 				validExport = false
 			}
 		}

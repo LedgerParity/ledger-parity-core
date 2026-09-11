@@ -21,22 +21,42 @@ const (
 
 // InternalPayment represents a payment record stored in a target application's database or API.
 type InternalPayment struct {
-	OperationType string            `json:"operation_type"` // Must be payment
-	Network       string            `json:"network"`        // Exact Stellar network passphrase
-	OperationID   string            `json:"operation_id,omitempty"`
-	AssetType     string            `json:"asset_type"`
-	AssetIssuer   string            `json:"asset_issuer,omitempty"`
-	AssetContract string            `json:"asset_contract,omitempty"` // Unsupported, never silently aliased
-	ID            string            `json:"id"`
-	SourceApp     string            `json:"source_app"`
-	ReferenceID   string            `json:"reference_id,omitempty"`
-	Sender        string            `json:"sender"`
-	Recipient     string            `json:"recipient"`
-	Amount        string            `json:"amount"`
-	Asset         string            `json:"asset"` // e.g. "XLM", "USDC", "native"
-	Timestamp     time.Time         `json:"timestamp"`
-	Status        string            `json:"status"` // e.g. "completed", "pending", "success"
-	Metadata      map[string]string `json:"metadata,omitempty"`
+	SettlementStart   time.Time         `json:"settlement_start,omitempty"`
+	SettlementEnd     time.Time         `json:"settlement_end,omitempty"`
+	BusinessReference string            `json:"business_reference,omitempty"`
+	OperationType     string            `json:"operation_type"` // Must be payment
+	Network           string            `json:"network"`        // Exact Stellar network passphrase
+	OperationID       string            `json:"operation_id,omitempty"`
+	AssetType         string            `json:"asset_type"`
+	AssetIssuer       string            `json:"asset_issuer,omitempty"`
+	AssetContract     string            `json:"asset_contract,omitempty"` // Unsupported, never silently aliased
+	ID                string            `json:"id"`
+	SourceApp         string            `json:"source_app"`
+	ReferenceID       string            `json:"reference_id,omitempty"`
+	Sender            string            `json:"sender"`
+	Recipient         string            `json:"recipient"`
+	Amount            string            `json:"amount"`
+	Asset             string            `json:"asset"` // e.g. "XLM", "USDC", "native"
+	Timestamp         time.Time         `json:"timestamp"`
+	Status            string            `json:"status"` // e.g. "completed", "pending", "success"
+	Metadata          map[string]string `json:"metadata,omitempty"`
+}
+
+// MatchingWindow uses an explicit asserted interval without widening it. Legacy
+// timestamp expectations retain their configured symmetric time tolerance.
+func (p InternalPayment) MatchingWindow(tolerance time.Duration) (time.Time, time.Time) {
+	if !p.SettlementStart.IsZero() {
+		return p.SettlementStart, p.SettlementEnd
+	}
+	return p.Timestamp.Add(-tolerance), p.Timestamp.Add(tolerance)
+}
+
+func (p InternalPayment) InWindow(start, end time.Time) bool {
+	a, b := p.Timestamp, p.Timestamp
+	if !p.SettlementStart.IsZero() {
+		a, b = p.SettlementStart, p.SettlementEnd
+	}
+	return (start.IsZero() || !a.Before(start)) && (end.IsZero() || !b.After(end))
 }
 
 // OnChainPayment represents a provider observation (or an explicitly offline fixture).

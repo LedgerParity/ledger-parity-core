@@ -11,6 +11,20 @@ permissions:
   contents: read
 
 jobs:
+  rpc-corpus:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: tools/rpc-corpus
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: tools/rpc-corpus/package-lock.json
+      - run: npm ci --ignore-scripts --no-fund
+      - run: npm test
   test:
     name: Build & Test
     strategy:
