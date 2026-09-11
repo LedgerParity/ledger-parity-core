@@ -9,3 +9,13 @@ This is a bounded engineering roadmap, not an eligibility or impact claim.
 5. **Durable ingestion and broader semantics (deferred).** Atomic observation/report/checkpoint persistence with network/account/provider scope; crash/restart/idempotency tests. Path payments need explicit source-versus-delivered amounts; Soroban needs contract/event identity, decimals and retention semantics. Acceptance: separate design and failure fixtures before advertising support. No signing or fund movement.
 
 See [bounded tasks](docs/backlog.md), [audit](docs/GAP_ASSESSMENT.md), and [decisions](DECISIONS.md). Current check results belong in PROJECT_HANDOFF.md, not future milestone promises.
+
+## Implemented milestone status
+
+- [x] Exact amounts and explicit network/operation/asset/direction contract.
+- [x] Conservative ambiguity, duplicate and incomplete-evidence results; candidate IDs retained.
+- [x] Paginated Horizon scan and negative ingestion tests; errors never become empty successful scans.
+- [x] Canonical connectors and reproducible CLI workflow, including mock Horizon success/failure and optional read-only testnet evidence.
+- [x] Contributor/reviewer documentation and truthful appeal draft in CLI.
+- [ ] Real operator validation, durable checkpointing and broader payment/event support.
+- [ ] Remote CI confirmation and local race verification; current environment/evidence limits are in PROJECT_HANDOFF.md.

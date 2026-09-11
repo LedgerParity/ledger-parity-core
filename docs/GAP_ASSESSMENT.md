@@ -20,3 +20,9 @@ Intended users are backend engineers operating Stellar classic-payment applicati
 Repository boundaries remain core (types/matching/Horizon), connectors (application input), CLI (operator workflow). They are existing boundaries, not a funding strategy. Independently buildable dependency pins are required; no new repositories or license changes.
 
 Reusable reference lessons: inspect before implementing; check official contracts and dates; implement the smallest complete workflow; test missing/conflicting evidence; distinguish fixture/local/live/remote evidence; maintain decisions and acceptance gates. ProofGrid product, architecture, license, permissions and test results do not transfer.
+
+## Applied fixes and remaining evidence
+
+The P0/P1 implementation slice is now in code: engine/types/utils implement exact identity and conservative results; ingest has cursor traversal and coverage; connectors validate canonical input and preserve exact amounts; CLI propagates errors, honors config/flags and includes an offline demo. Tests exercise these behaviors and their failure cases. SQLite/checkpoint and Soroban claims were removed, not falsely implemented. Named adapter compatibility remains unverified and labeled experimental. See CLI docs/LIVE_TESTNET_RESULT.json for a narrowly labeled read-only API check, and PROJECT_HANDOFF.md for executed versus unverified checks.
+
+Feedback update: the maintainer recalls a concern about making LedgerParity clearly Stellar-based with practical ecosystem impact. Written feedback and original application remain unavailable. This supports prioritizing the payment-operator workflow; it does not prove every listed gap caused rejection. No user adoption, measured impact or organizer acceptance is established. Validation with an actual operator is the next product gate.
