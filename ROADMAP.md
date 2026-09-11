@@ -18,4 +18,5 @@ See [bounded tasks](docs/backlog.md), [audit](docs/GAP_ASSESSMENT.md), and [deci
 - [x] Canonical connectors and reproducible CLI workflow, including mock Horizon success/failure and optional read-only testnet evidence.
 - [x] Contributor/reviewer documentation and truthful appeal draft in CLI.
 - [ ] Real operator validation, durable checkpointing and broader payment/event support.
-- [ ] Remote CI confirmation and local race verification; current environment/evidence limits are in PROJECT_HANDOFF.md.
+- [x] Remote CI verified at the revisions linked in PROJECT_HANDOFF.md.
+- [ ] Optional local Windows race execution (no C compiler); Linux CI race tests passed.

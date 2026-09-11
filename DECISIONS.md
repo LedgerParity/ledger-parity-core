@@ -12,3 +12,5 @@
 - Feedback available is the maintainer's recollection that Stellar relevance/impact was a concern. The rejection text and application are unavailable. Address this by making the actual Stellar operator workflow inspectable, not claiming established adoption or admission.
 
 2026-09-11 completion clarification: nearby payments with different amounts and no explicit identity remain UNKNOWN, rather than inventing an amount-mismatch relationship or absence. Duplicate source IDs still reserve their candidate operations, so another record cannot arbitrarily reuse one. Ambiguous reports expose sorted candidate operation IDs. CI tests both the compatibility floor and the current stable Go alias; neither workflow presence nor a local pass implies remote success.
+
+Verification amendment 2026-09-11: remote CI passed for core dda2427, connectors 83fd7ec and CLI 1861a5f. Core required a manual dispatch despite Actions being enabled; no policy changes were made. Local Windows race unavailability does not negate the separate successful Linux race jobs. Exact run links and isolated test evidence are in CLI docs/VERIFICATION.md.
