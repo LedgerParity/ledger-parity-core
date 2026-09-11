@@ -151,3 +151,23 @@ func TestOrphanRequiresCompleteExport(t *testing.T) {
 		t.Fatal(r)
 	}
 }
+
+func TestUnreferencedDifferentAmountIsNotProvenMissing(t *testing.T) {
+	p, o := pair()
+	p.OperationID = ""
+	p.ReferenceID = ""
+	o.Amount = "1"
+	r := run([]types.InternalPayment{p}, []types.OnChainPayment{o}, options())
+	if r.TotalUnknown != 1 || r.TotalDiscrepancies != 0 {
+		t.Fatal(r)
+	}
+}
+func TestDuplicateClaimsCannotBeReused(t *testing.T) {
+	p, o := pair()
+	other := p
+	other.ID = "another"
+	r := run([]types.InternalPayment{p, p, other}, []types.OnChainPayment{o}, options())
+	if r.TotalMatched != 0 || r.TotalUnknown != 1 {
+		t.Fatal(r)
+	}
+}

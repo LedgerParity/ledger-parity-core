@@ -83,13 +83,14 @@ func (r *Reconciler) Reconcile(app string, start, end time.Time, ips []types.Int
 		if err := types.ValidateInternal(*p); err != nil || !validWindow || p.Timestamp.Before(start) || p.Timestamp.After(end) {
 			result.Discrepancy = types.DiscrepancyInvalid
 			result.Notes = "Invalid record or reconciliation window"
-		} else if ids[p.SourceApp+"\x00"+p.ID] > 1 {
-			result.Status = types.MatchDiscrepancy
-			result.Discrepancy = types.DiscrepancyDuplicateInternal
-			result.Notes = "Repeated internal ID within source"
 		} else if badChain {
 			unresolved(&result, "Malformed or conflicting on-chain observations")
 		} else {
+			if ids[p.SourceApp+"\x00"+p.ID] > 1 {
+				result.Status = types.MatchDiscrepancy
+				result.Discrepancy = types.DiscrepancyDuplicateInternal
+				result.Notes = "Repeated internal ID within source"
+			}
 			for j, o := range unique {
 				if o.Network != p.Network || o.Account != p.Sender || o.Destination != p.Recipient || o.AssetType != p.AssetType || o.AssetCode != p.Asset || o.AssetIssuer != p.AssetIssuer {
 					continue
@@ -103,12 +104,6 @@ func (r *Reconciler) Reconcile(app string, start, end time.Time, ips []types.Int
 				// ReferenceID means transaction hash only. Memos are not unique identifiers.
 				if p.ReferenceID != "" && p.ReferenceID != o.TransactionHash {
 					continue
-				}
-				if p.OperationID == "" && p.ReferenceID == "" {
-					delta, _ := utils.AmountDeltaScaled(p.Amount, o.Amount, 7)
-					if delta != "0.0000000" {
-						continue
-					}
 				}
 				candidates[i] = append(candidates[i], j)
 				claims[j] = append(claims[j], i)
@@ -144,13 +139,17 @@ func (r *Reconciler) Reconcile(app string, start, end time.Time, ips []types.Int
 				unresolved(result, "Failed transaction is not settlement")
 				continue
 			}
+			delta, _ := utils.AmountDeltaScaled(p.Amount, o.Amount, 7)
+			if delta != "0.0000000" && p.OperationID == "" && p.ReferenceID == "" {
+				unresolved(result, "Nearby payment has a different amount; no explicit identity proves its relationship")
+				continue
+			}
 			if !settled(p.Status) {
 				result.Status = types.MatchDiscrepancy
 				result.Discrepancy = types.DiscrepancyStatusMismatch
 				result.Notes = "Settlement observed but internal status is not completed/success/settled"
 				continue
 			}
-			delta, _ := utils.AmountDeltaScaled(p.Amount, o.Amount, 7)
 			result.AmountDelta = delta
 			if delta != "0.0000000" {
 				result.Status = types.MatchDiscrepancy
