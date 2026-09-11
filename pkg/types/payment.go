@@ -70,13 +70,14 @@ const (
 
 // MatchResult represents the detailed reconciliation verdict for a pair or orphan.
 type MatchResult struct {
-	InternalPayment *InternalPayment `json:"internal_payment,omitempty"`
-	OnChainPayment  *OnChainPayment  `json:"on_chain_payment,omitempty"`
-	Status          MatchStatus      `json:"status"`
-	Discrepancy     DiscrepancyType  `json:"discrepancy"`
-	Notes           string           `json:"notes,omitempty"`
-	TimeDeltaSec    int64            `json:"time_delta_sec,omitempty"`
-	AmountDelta     string           `json:"amount_delta,omitempty"`
+	CandidateOperationIDs []string         `json:"candidate_operation_ids,omitempty"`
+	InternalPayment       *InternalPayment `json:"internal_payment,omitempty"`
+	OnChainPayment        *OnChainPayment  `json:"on_chain_payment,omitempty"`
+	Status                MatchStatus      `json:"status"`
+	Discrepancy           DiscrepancyType  `json:"discrepancy"`
+	Notes                 string           `json:"notes,omitempty"`
+	TimeDeltaSec          int64            `json:"time_delta_sec,omitempty"`
+	AmountDelta           string           `json:"amount_delta,omitempty"`
 }
 
 // DiscrepancyReport aggregates all match results and high-level metrics for a reconciliation run.

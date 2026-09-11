@@ -4,6 +4,7 @@ import (
 	"github.com/LedgerParity/ledger-parity-core/pkg/types"
 	"github.com/LedgerParity/ledger-parity-core/pkg/utils"
 	"reflect"
+	"sort"
 	"strings"
 	"time"
 )
@@ -109,6 +110,10 @@ func (r *Reconciler) Reconcile(app string, start, end time.Time, ips []types.Int
 				claims[j] = append(claims[j], i)
 			}
 		}
+		for _, j := range candidates[i] {
+			result.CandidateOperationIDs = append(result.CandidateOperationIDs, unique[j].OperationID)
+		}
+		sort.Strings(result.CandidateOperationIDs)
 		report.Results = append(report.Results, result)
 	}
 	completeFor := func(p types.InternalPayment) bool {

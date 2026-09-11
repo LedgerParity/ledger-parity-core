@@ -171,3 +171,15 @@ func TestDuplicateClaimsCannotBeReused(t *testing.T) {
 		t.Fatal(r)
 	}
 }
+
+func TestAmbiguousReportPreservesCandidateIdentity(t *testing.T) {
+	p, o := pair()
+	p.OperationID = ""
+	other := o
+	other.OperationID = "2"
+	r := run([]types.InternalPayment{p}, []types.OnChainPayment{other, o}, options())
+	ids := r.Results[0].CandidateOperationIDs
+	if len(ids) != 2 || ids[0] != "1" || ids[1] != "2" {
+		t.Fatal(ids)
+	}
+}
