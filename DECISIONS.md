@@ -2,6 +2,8 @@
 
 2026-09-11
 
+- Follow-up research selects SDP export verification as the first integration hypothesis, gated by release/schema verification and operator validation. Inspected source omits sender/network/operation identity and settlement time; no automatic adapter or compatibility claim is justified yet. Prioritize replayable evidence and an RPC equivalence corpus. See [assessment](docs/STELLAR_OPPORTUNITIES.md).
+
 - Preserve read-only application-versus-Stellar reconciliation and existing MIT licenses and three repository boundaries. No fund movement, wallet integration, token, contract or dashboard is justified.
 - Scope this preview to ordinary classic `payment` operations. Exclude path payments, account creation/merge and Soroban. A token contract address is never an issuer alias. Exact passphrase identifies network; operation ID identifies a settlement within that network. Accounts are compared as exact opaque strings, including muxed addresses; cryptographic address validation is not implemented.
 - Use exact positive int64-range stroop amounts; reject excess precision rather than round. Remove floating amount tolerance/asset alias options. This is an intentional breaking preview contract change. `reference_id` means transaction hash only, never memo; explicit references still require economics/direction/time consistency. `operation_type`, `network`, `asset_type` and issuer for credit assets are required on input.
