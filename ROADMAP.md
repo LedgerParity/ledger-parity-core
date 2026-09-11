@@ -2,6 +2,8 @@
 
 This is a bounded engineering roadmap, not an eligibility or impact claim.
 
+Follow-up [research](docs/STELLAR_OPPORTUNITIES.md) prioritizes a release-verified SDP export contract and replayable evidence, then an ordinary-payment Horizon/RPC equivalence corpus. These are proposed integrations. Horizon's documented end-of-life direction raises migration priority; preserve coverage guarantees throughout.
+
 1. **Correct classic-payment comparison (current milestone).** Exact stroops; full asset/network/direction identity; operation-aware matching; duplicate/ambiguous data stays reviewable. Acceptance: one-stroop-at-int64-limit, issuer, direction, duplicate and failed-transaction regressions pass.
 2. **Coverage and reproducible operator workflow (current milestone).** Paginated read-only Horizon scan; retention/freshness bounds; errors never become absence; strict file input and CLI; deterministic offline end-to-end demo. Acceptance: >200 operations, later-page failure, rate limit, incomplete window, config/output failures and isolated module builds pass. Commit and push all three owning repositories.
 3. **Contributor/reviewer readiness (current milestone).** Accurate READMEs, evidence audit, contributor tasks, reviewer walkthrough and feedback-aware appeal draft. Acceptance: new reviewer can run the documented demo without sibling checkouts, accounts or secrets; limitations visible in report/docs.
