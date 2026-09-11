@@ -1,6 +1,7 @@
 package types
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 )
@@ -40,6 +41,24 @@ type InternalPayment struct {
 	Timestamp         time.Time         `json:"timestamp"`
 	Status            string            `json:"status"` // e.g. "completed", "pending", "success"
 	Metadata          map[string]string `json:"metadata,omitempty"`
+}
+
+// MarshalJSON omits unset time representations instead of emitting year-one
+// timestamps. Decoding continues to use the ordinary strict struct contract.
+func (p InternalPayment) MarshalJSON() ([]byte, error) {
+	type plain InternalPayment
+	optional := func(t time.Time) *time.Time {
+		if t.IsZero() {
+			return nil
+		}
+		return &t
+	}
+	return json.Marshal(struct {
+		plain
+		Timestamp *time.Time `json:"timestamp,omitempty"`
+		Start     *time.Time `json:"settlement_start,omitempty"`
+		End       *time.Time `json:"settlement_end,omitempty"`
+	}{plain(p), optional(p.Timestamp), optional(p.SettlementStart), optional(p.SettlementEnd)})
 }
 
 // MatchingWindow uses an explicit asserted interval without widening it. Legacy
