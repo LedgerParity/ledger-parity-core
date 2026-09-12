@@ -1,5 +1,11 @@
 ﻿# ledger-parity-core
 
+![LedgerParity](assets/lp-banner.png)
+
+[![Go](https://img.shields.io/badge/Go-1.22.2%2B-3FE0C4?style=flat&logo=go&logoColor=white&labelColor=0B0E1E)](https://go.dev/dl/)
+[![License](https://img.shields.io/github/license/LedgerParity/ledger-parity-core?style=flat&color=7A5CFF)](LICENSE)
+[![CI](https://img.shields.io/github/actions/workflow/status/LedgerParity/ledger-parity-core/ci.yml?branch=main&style=flat&label=CI&logo=github&labelColor=0B0E1E)](.github/workflows/ci.yml)
+
 Read-only reconciliation of application payment expectations against Stellar **ordinary classic payment operations**. For backend engineers investigating missed settlement notifications, incorrect amounts or duplicated internal records. Developer preview; no demonstrated operator adoption or production-readiness claim.
 
 Amounts stay exact to one stroop, including at the signed-int64 limit. Matches require the same network passphrase, sender, recipient, asset type/code/issuer and time window. An operation ID disambiguates multiple payments in one transaction. Unproven coverage, ambiguous candidates and malformed observations remain `UNKNOWN`.
