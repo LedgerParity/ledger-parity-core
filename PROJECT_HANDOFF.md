@@ -24,3 +24,5 @@ Follow-up research: docs/STELLAR_OPPORTUNITIES.md records pinned SDP export sour
 ## Implementation update 2026-09-12
 
 Follow-up implementation: explicit interval expectations and business references; a new interval regression test; tools/rpc-corpus with locked SDK, read-only capture, public-testnet native fixture and seven offline verification tests. Runtime RPC ingestion remains unimplemented because broader identity/asset/history gates remain open. No signing, contracts or new repositories. See tools/rpc-corpus/README.md for evidence limits.
+
+Brand and documentation handover 2026-09-12: org brand assets and a static documentation site (https://ledgerparity.github.io/) are live; the LedgerParity/.github org profile repository is staged locally but not yet created on GitHub. This commit is documentation only.
