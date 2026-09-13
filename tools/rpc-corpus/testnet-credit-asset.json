@@ -1,0 +1,68 @@
+﻿{
+    "schema":  "ledgerparity-rpc-corpus/v1",
+    "evidence":  "public-testnet provider observations; not independent application records",
+    "captured_at":  "2026-09-13T07:20:55.533Z",
+    "network":  "Test SDF Network ; September 2015",
+    "horizon_url":  "https://horizon-testnet.stellar.org",
+    "rpc_url":  "https://soroban-testnet.stellar.org",
+    "rpc":  {
+                "latestLedger":  4651373,
+                "latestLedgerCloseTime":  "1789280452",
+                "oldestLedger":  4530414,
+                "oldestLedgerCloseTime":  "1788675657",
+                "status":  "SUCCESS",
+                "txHash":  "8b6c5b13850c65d7e19262420a6daa389c9f0920f5db2b714235526f059d589c",
+                "applicationOrder":  1,
+                "feeBump":  false,
+                "envelopeXdr":  "AAAAAgAAAABVMT4p3CpQKC7MUJDDWHdjA4/F1L6krtAhi77XL5tY0gAAAGQAACV/AAAHYAAAAAAAAAADFwcSF7pDR9+wmrcNYwbkbwAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAEAAAAAhSMMrjles+wObONzI2C8ACFYyfhi7Vx2ourP1BGrkCgAAAACQ0VURVMAAAAAAAAAAAAAALYrfIPEZ2h7fajQbHpczQvV+nD4AcZaX1kgMK6Szev6AAAAALCZr98AAAAAAAAAAS+bWNIAAABAI1RRVK994EY1sfmk5Up4jNDYONTndssg8wMqTr/S4gTgI+zuziQQ4ARmAwYU5K3WljYrUBG3VGobe/JvZKF+Dg==",
+                "resultXdr":  "AAAAAAAAAGQAAAAAAAAAAQAAAAAAAAABAAAAAAAAAAA=",
+                "resultMetaXdr":  "AAAABAAAAAAAAAACAAAAAwBG+VAAAAAAAAAAAFUxPincKlAoLsxQkMNYd2MDj8XUvqSu0CGLvtcvm1jSAAAAAM+CfrsAACV/AAAHXwAAAAYAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAACiAAAAAAAAAAMAAAAAAEb5TwAAAABqpkAuAAAAAAAAAAEARvlQAAAAAAAAAABVMT4p3CpQKC7MUJDDWHdjA4/F1L6krtAhi77XL5tY0gAAAADPgn67AAAlfwAAB2AAAAAGAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAogAAAAAAAAADAAAAAABG+VAAAAAAaqZAMwAAAAAAAAABAAAAAAAAAAQAAAADAEb5TwAAAAEAAAAAVTE+KdwqUCguzFCQw1h3YwOPxdS+pK7QIYu+1y+bWNIAAAACQ0VURVMAAAAAAAAAAAAAALYrfIPEZ2h7fajQbHpczQvV+nD4AcZaX1kgMK6Szev6AAAABHqmurV//////////wAAAAEAAAAAAAAAAAAAAAEARvlQAAAAAQAAAABVMT4p3CpQKC7MUJDDWHdjA4/F1L6krtAhi77XL5tY0gAAAAJDRVRFUwAAAAAAAAAAAAAAtit8g8RnaHt9qNBselzNC9X6cPgBxlpfWSAwrpLN6/oAAAADyg0K1n//////////AAAAAQAAAAAAAAAAAAAAAwBFADsAAAABAAAAAIUjDK45XrPsDmzjcyNgvAAhWMn4Yu1cdqLqz9QRq5AoAAAAAkNFVEVTAAAAAAAAAAAAAAC2K3yDxGdoe32o0Gx6XM0L1fpw+AHGWl9ZIDCuks3r+gAAAC/DH3NFf/////////8AAAABAAAAAAAAAAAAAAABAEb5UAAAAAEAAAAAhSMMrjles+wObONzI2C8ACFYyfhi7Vx2ourP1BGrkCgAAAACQ0VURVMAAAAAAAAAAAAAALYrfIPEZ2h7fajQbHpczQvV+nD4AcZaX1kgMK6Szev6AAAAMHO5IyR//////////wAAAAEAAAAAAAAAAAAAAAEAAAAAAAAAAb+i9/ib7/8cAPcTBxDHgB8gDhaWOjtUMfeShryjW0UMAAAAAQAAAAAAAAAEAAAADwAAAAh0cmFuc2ZlcgAAABIAAAAAAAAAAFUxPincKlAoLsxQkMNYd2MDj8XUvqSu0CGLvtcvm1jSAAAAEgAAAAAAAAAAhSMMrjles+wObONzI2C8ACFYyfhi7Vx2ourP1BGrkCgAAAAOAAAAPkNFVEVTOkdDM0NXN0VEWVJUV1E2MzVWRElHWTZTNFpVRjVMNlRRN0FBNE1XUzdMRVFEQkxVU1pYVjdVUFM0AAAAAAARAAAAAQAAAAIAAAAPAAAABmFtb3VudAAAAAAACgAAAAAAAAAAAAAAALCZr98AAAAPAAAAC3RvX211eGVkX2lkAAAAAA0AAAAgFwcSF7pDR9+wmrcNYwbkbwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAHXkotywnA8z+r365/0701QSlWouXn8m0UOoshCtNHOYQAAAAEAAAAAAAAAAgAAAA8AAAADZmVlAAAAABIAAAAAAAAAAFUxPincKlAoLsxQkMNYd2MDj8XUvqSu0CGLvtcvm1jSAAAACgAAAAAAAAAAAAAAAAAAAGQAAAAA",
+                "events":  {
+                               "transactionEventsXdr":  [
+                                                            "AAAAAAAAAAAAAAAB15KLcsJwPM/q9+uf9O9NUEpVqLl5/JtFDqLIQrTRzmEAAAABAAAAAAAAAAIAAAAPAAAAA2ZlZQAAAAASAAAAAAAAAABVMT4p3CpQKC7MUJDDWHdjA4/F1L6krtAhi77XL5tY0gAAAAoAAAAAAAAAAAAAAAAAAABk"
+                                                        ],
+                               "contractEventsXdr":  [
+                                                         [
+                                                             "AAAAAAAAAAG/ovf4m+//HAD3EwcQx4AfIA4Wljo7VDH3koa8o1tFDAAAAAEAAAAAAAAABAAAAA8AAAAIdHJhbnNmZXIAAAASAAAAAAAAAABVMT4p3CpQKC7MUJDDWHdjA4/F1L6krtAhi77XL5tY0gAAABIAAAAAAAAAAIUjDK45XrPsDmzjcyNgvAAhWMn4Yu1cdqLqz9QRq5AoAAAADgAAAD5DRVRFUzpHQzNDVzdFRFlSVFdRNjM1VkRJR1k2UzRaVUY1TDZUUTdBQTRNV1M3TEVRREJMVVNaWFY3VVBTNAAAAAAAEQAAAAEAAAACAAAADwAAAAZhbW91bnQAAAAAAAoAAAAAAAAAAAAAAACwma/fAAAADwAAAAt0b19tdXhlZF9pZAAAAAANAAAAIBcHEhe6Q0ffsJq3DWMG5G8AAAAAAAAAAAAAAAAAAAAA"
+                                                         ]
+                                                     ]
+                           },
+                "ledger":  4651344,
+                "createdAt":  "1789280307"
+            },
+    "horizon":  [
+                    {
+                        "_links":  {
+                                       "self":  {
+                                                    "href":  "https://horizon-testnet.stellar.org/operations/19977370362449921"
+                                                },
+                                       "transaction":  {
+                                                           "href":  "https://horizon-testnet.stellar.org/transactions/8b6c5b13850c65d7e19262420a6daa389c9f0920f5db2b714235526f059d589c"
+                                                       },
+                                       "effects":  {
+                                                       "href":  "https://horizon-testnet.stellar.org/operations/19977370362449921/effects"
+                                                   },
+                                       "succeeds":  {
+                                                        "href":  "https://horizon-testnet.stellar.org/effects?order=desc\u0026cursor=19977370362449921"
+                                                    },
+                                       "precedes":  {
+                                                        "href":  "https://horizon-testnet.stellar.org/effects?order=asc\u0026cursor=19977370362449921"
+                                                    }
+                                   },
+                        "id":  "19977370362449921",
+                        "paging_token":  "19977370362449921",
+                        "transaction_successful":  true,
+                        "source_account":  "GBKTCPRJ3QVFAKBOZRIJBQ2YO5RQHD6F2S7KJLWQEGF35VZPTNMNEKRI",
+                        "type":  "payment",
+                        "type_i":  1,
+                        "created_at":  "2026-09-13T06:18:27Z",
+                        "transaction_hash":  "8b6c5b13850c65d7e19262420a6daa389c9f0920f5db2b714235526f059d589c",
+                        "asset_type":  "credit_alphanum12",
+                        "asset_code":  "CETES",
+                        "asset_issuer":  "GC3CW7EDYRTWQ635VDIGY6S4ZUF5L6TQ7AA4MWS7LEQDBLUSZXV7UPS4",
+                        "from":  "GBKTCPRJ3QVFAKBOZRIJBQ2YO5RQHD6F2S7KJLWQEGF35VZPTNMNEKRI",
+                        "to":  "GCCSGDFOHFPLH3AONTRXGI3AXQACCWGJ7BRO2XDWULVM7VARVOICQRCN",
+                        "amount":  "296.2862047"
+                    }
+                ]
+}
