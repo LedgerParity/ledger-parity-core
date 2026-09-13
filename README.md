@@ -6,7 +6,7 @@
 [![License](https://img.shields.io/github/license/LedgerParity/ledger-parity-core?style=flat&color=7A5CFF)](LICENSE)
 [![CI](https://img.shields.io/github/actions/workflow/status/LedgerParity/ledger-parity-core/ci.yml?branch=main&style=flat&label=CI&logo=github&labelColor=0B0E1E)](.github/workflows/ci.yml)
 
-See the [LedgerParity documentation](https://ledgerparity.github.io/) for the full organization overview, concepts, quick start, and evidence discipline.
+See the [LedgerParity documentation](https://ledgerparity.vercel.app/) (also available at [ledgerparity.github.io](https://ledgerparity.github.io/)) for the full organization overview, concepts, quick start, and evidence discipline.
 
 Read-only reconciliation of application payment expectations against Stellar **ordinary classic payment operations**. For backend engineers investigating missed settlement notifications, incorrect amounts or duplicated internal records. Developer preview; no demonstrated operator adoption or production-readiness claim.
 
