@@ -33,3 +33,8 @@ A complete scan means provider-declared retained history covers the requested wi
 Not supported: Soroban/RPC events, contract tokens, path payments, account creation/merge settlement, memo enrichment, transaction signing or remediation. The old `pkg/store` API is not connected to ingestion or CLI: MemoryStore is process-local; SQLiteStore needs a caller-registered driver and stores aggregate reports only. There is no durable automatic checkpoint/resume capability. Scans restart safely instead of advancing an unverified checkpoint.
 
 Read the [audit](docs/GAP_ASSESSMENT.md), [source review](docs/SOURCES.md), [roadmap](ROADMAP.md), [decisions](DECISIONS.md), [handoff](PROJECT_HANDOFF.md), [contributor tasks](docs/backlog.md), [contribution guide](CONTRIBUTING.md) and [security guidance](SECURITY.md). Existing [MIT license](LICENSE) is unchanged. Drips admission is not claimed.
+
+## Stellar Wave submission preparation
+
+See the [submission brief](docs/SUBMISSION.md), [verification record](docs/VERIFICATION_OCT09.md),
+[maintainers](MAINTAINERS.md), and [focused contributor backlog](docs/WAVE_BACKLOG.md).
