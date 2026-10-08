@@ -26,3 +26,7 @@ Runtime: go version go1.22.2 linux/amd64.
 - Changes will be proposed through a fork PR because the available account
   cannot push directly to the organization's protected branch. Merge decisions
   remain with maintainers. Recheck the final PR checks before applying.
+
+## October 8 recheck
+
+Go tests, race tests, vet and build passed again. Preparation PR #11 remained open.
