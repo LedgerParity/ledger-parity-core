@@ -1,4 +1,4 @@
-﻿# Contributing
+# Contributing
 
 Use Go 1.22.2+ and run `go test ./...`, `go vet ./...`, `go build ./...`; CI also runs `go test -race ./...` with a C compiler. A sibling checkout is not required. Format changes with gofmt.
 
@@ -7,3 +7,8 @@ Choose a bounded task in docs/backlog.md. Open a PR explaining the concrete inpu
 No signing keys, customer exports, invented adoption or application compatibility. Named adapters require provenance before compatibility claims. Follow SECURITY.md for sensitive findings. Existing MIT licensing applies; preserve upstream notices.
 
 Drips participation/approval is not established. Issues should arise from actual engineering needs; do not add Wave labels or points merely to create activity.
+
+Use focused `feat/<topic>`, `fix/<topic>`, `docs/<topic>`, or `test/<topic>` branches.
+Implementation PRs must include `Closes #<issue_id>` for the issue implemented,
+actual check results, and limitations. Open a tracking issue first if needed.
+Required CI must pass before merge. See MAINTAINERS.md for contact and review.
